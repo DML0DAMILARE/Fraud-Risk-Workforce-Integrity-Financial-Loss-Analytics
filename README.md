@@ -118,28 +118,4 @@ Built with vanilla HTML/CSS/JS and [Chart.js](https://www.chartjs.org/) — all 
 
 ---
 
-## 🚀 Usage
 
-```bash
-# Clone the repo
-git clone https://github.com/<your-username>/aegis-fraud-risk-analytics.git
-cd aegis-fraud-risk-analytics
-
-# Open the dashboard — no build step required
-open Aegis_Risk_Dashboard.html   # macOS
-start Aegis_Risk_Dashboard.html  # Windows
-```
-
-Or enable **GitHub Pages** on this repo (Settings → Pages → Deploy from branch) and share the dashboard as a live link.
-
----
-
-## 📁 Data Disclaimer
-
-All data in this repository is **synthetically generated** for the purposes of this case study. Aegis Financial Services Ltd. is a fictional company; no real customer, employee, or transaction data is used.
-
----
-
-## 👤 Author
-
-Case study designed and built as a portfolio project demonstrating joint HR + Financial fraud analytics, risk scoring, and dashboard design.
