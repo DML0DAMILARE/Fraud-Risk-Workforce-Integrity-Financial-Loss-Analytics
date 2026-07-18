@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Aegis Financial Services — Fraud Risk &amp; Workforce Integrity Command Center</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #080C15;
+      --bg-panel: #111828;
+      --bg-panel-2: #0D1420;
+      --line: #233052;
+      --line-soft: #1A2338;
+      --text: #EAF0FA;
+      --muted: #8695B5;
+      --muted-2: #5C6A8A;
+      --teal: #2FD1C0;
+      --amber: #F2A93B;
+      --red: #FF5A5F;
+      --gold: #D8B45C;
+      --blue: #5B8DEF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'IBM Plex Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(91, 141, 239, 0.10), transparent 45%),
+        radial-gradient(circle at 90% 10%, rgba(216, 180, 92, 0.07), transparent 40%);
+    }
+
+    .mono {
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .condensed {
+      font-family: 'IBM Plex Sans Condensed', sans-serif;
+    }
+
+    /* ---------- Header ---------- */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(8, 12, 21, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .header-inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 16px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono';
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--gold);
+      transform: rotate(45deg);
+    }
+
+    .brand-mark span {
+      transform: rotate(-45deg);
+    }
+
+    .brand-text .name {
+      font-weight: 600;
+      font-size: 14.5px;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text .sub {
+      font-size: 10.5px;
+      color: var(--muted);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 2px;
+    }
+
+    nav a {
+      font-family: 'IBM Plex Mono';
+      font-size: 11px;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 8px 12px;
+      border-radius: 3px;
+      transition: all .15s ease;
+      text-transform: uppercase;
+    }
+
+    nav a:hover {
+      color: var(--text);
+      background: var(--bg-panel);
+    }
+
+    .live-tag {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'IBM Plex Mono';
+      font-size: 10.5px;
+      color: var(--muted);
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 3px;
+    }
+
+    .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .35;
+      }
+    }
+
+    /* ---------- Layout ---------- */
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    section {
+      padding: 64px 0 20px;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .eyebrow .letter {
+      font-family: 'IBM Plex Mono';
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--bg);
+      background: var(--gold);
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .eyebrow .txt {
+      font-family: 'IBM Plex Mono';
+      font-size: 11.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    h2 {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 13.5px;
+      max-width: 640px;
+      margin-bottom: 32px;
+      line-height: 1.55;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      padding: 56px 0 40px;
+    }
+
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .hero-title {
+      max-width: 640px;
+    }
+
+    .hero-title .tag {
+      font-family: 'IBM Plex Mono';
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .hero-title h1 {
+      font-size: 40px;
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.015em;
+    }
+
+    .hero-title p {
+      color: var(--muted);
+      font-size: 14.5px;
+      margin-top: 14px;
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    .stamp {
+      border: 1px solid var(--line);
+      padding: 14px 18px;
+      min-width: 200px;
+      background: var(--bg-panel);
+    }
+
+    .stamp .row {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'IBM Plex Mono';
+      font-size: 10.5px;
+      color: var(--muted);
+      padding: 3px 0;
+    }
+
+    .stamp .row b {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .pulse-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      border: 1px solid var(--line);
+      background: var(--bg-panel);
+    }
+
+    .pulse-cell {
+      padding: 20px 18px;
+      border-right: 1px solid var(--line-soft);
+      position: relative;
+    }
+
+    .pulse-cell:last-child {
+      border-right: none;
+    }
+
+    .pulse-cell .lbl {
+      font-family: 'IBM Plex Mono';
+      font-size: 9.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .pulse-cell .val {
+      font-family: 'IBM Plex Mono';
+      font-size: 26px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .pulse-cell .delta {
+      font-size: 10.5px;
+      margin-top: 6px;
+      font-family: 'IBM Plex Mono';
+    }
+
+    .up {
+      color: var(--red);
+    }
+
+    .down {
+      color: var(--teal);
+    }
+
+    .flat {
+      color: var(--muted);
+    }
+
+    .pulse-cell.accent-red .val {
+      color: var(--red);
+    }
+
+    .pulse-cell.accent-teal .val {
+      color: var(--teal);
+    }
+
+    .pulse-cell.accent-gold .val {
+      color: var(--gold);
+    }
+
+    .pulse-cell.accent-amber .val {
+      color: var(--amber);
+    }
+
+    /* ---------- Cards / grids ---------- */
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .g4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .g3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .g2 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .g5 {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      padding: 20px;
+    }
+
+    .card .k-lbl {
+      font-family: 'IBM Plex Mono';
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .card .k-val {
+      font-family: 'IBM Plex Mono';
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .card .k-foot {
+      font-size: 11px;
+      color: var(--muted-2);
+      margin-top: 8px;
+    }
+
+    .panel {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      padding: 22px;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .panel-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .chart-box {
+      position: relative;
+      height: 280px;
+    }
+
+    .chart-box.tall {
+      height: 340px;
+    }
+
+    .chart-box.short {
+      height: 200px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 16px;
+    }
+
+    .three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ---------- Tables ---------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      font-family: 'IBM Plex Mono';
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--line);
+      font-weight: 500;
+    }
+
+    td {
+      padding: 9px 10px;
+      font-size: 12.5px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    td.mono,
+    th.mono {
+      font-family: 'IBM Plex Mono';
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 10px;
+      font-family: 'IBM Plex Mono';
+      border: 1px solid;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .badge.low {
+      color: var(--teal);
+      border-color: var(--teal);
+      background: rgba(47, 209, 192, 0.08);
+    }
+
+    .badge.moderate {
+      color: var(--amber);
+      border-color: var(--amber);
+      background: rgba(242, 169, 59, 0.08);
+    }
+
+    .badge.high {
+      color: #FF8A5C;
+      border-color: #FF8A5C;
+      background: rgba(255, 138, 92, 0.08);
+    }
+
+    .badge.critical {
+      color: var(--red);
+      border-color: var(--red);
+      background: rgba(255, 90, 95, 0.1);
+    }
+
+    /* ---------- EFRS Model ---------- */
+    .efrs-formula {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-family: 'IBM Plex Mono';
+      font-size: 12px;
+      color: var(--muted);
+      padding: 16px 18px;
+      border: 1px dashed var(--line);
+      margin-bottom: 20px;
+      background: var(--bg-panel-2);
+    }
+
+    .efrs-formula .term {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .weight-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .weight-row {
+      display: grid;
+      grid-template-columns: 150px 1fr 46px;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .weight-row .name {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .weight-track {
+      height: 10px;
+      background: var(--bg-panel-2);
+      border: 1px solid var(--line-soft);
+      position: relative;
+    }
+
+    .weight-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--amber));
+    }
+
+    .weight-row .pct {
+      font-family: 'IBM Plex Mono';
+      font-size: 11.5px;
+      text-align: right;
+      color: var(--text);
+    }
+
+    .gauge-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+    }
+
+    .gauge-val {
+      font-family: 'IBM Plex Mono';
+      font-size: 38px;
+      font-weight: 700;
+      margin-top: -64px;
+    }
+
+    .gauge-lbl {
+      font-family: 'IBM Plex Mono';
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Dept exposure ladder */
+    .ladder {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ladder-row {
+      display: grid;
+      grid-template-columns: 190px 1fr 90px 60px;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .ladder-row .dep {
+      font-size: 12.5px;
+    }
+
+    .ladder-track {
+      height: 16px;
+      background: var(--bg-panel-2);
+      border: 1px solid var(--line-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ladder-fill {
+      height: 100%;
+    }
+
+    .ladder-row .score {
+      font-family: 'IBM Plex Mono';
+      font-size: 12px;
+      text-align: right;
+    }
+
+    .ladder-row .emp {
+      font-family: 'IBM Plex Mono';
+      font-size: 11px;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      margin-top: 60px;
+      padding: 28px 0 60px;
+    }
+
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 11px;
+      color: var(--muted-2);
+      font-family: 'IBM Plex Mono';
+    }
+
+    @media (max-width: 980px) {
+      nav {
+        display: none;
+      }
+
+      .pulse-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .pulse-cell {
+        border-bottom: 1px solid var(--line-soft);
+      }
+
+      .g4,
+      .g3,
+      .g5,
+      .g2,
+      .two-col,
+      .three-col {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-title h1 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script type="application/json" id="dashboard-data">
+{"hr": {"headcount": 2000, "avg_age": 42.6, "avg_tenure": 9.0, "avg_salary": 55022.0, "dept_headcount": {"Consumer Lending": 432, "Digital Payment Services": 380, "SME Financing": 363, "Credit Solutions": 264, "Wealth Management": 222, "Merchant Payment Processing": 146, "Risk Management": 93, "Fraud Investigation": 64, "Compliance": 36}, "salary_band": {"Associate Level": 883, "Entry Level": 428, "Executive Management": 22, "Mid-Level Management": 480, "Senior Management": 187}, "tenure_band": {"Early Career Employees": 360, "Experienced Employees": 553, "Long-Service Employees": 352, "New Hire": 227, "Senior Employees": 508}, "age_group": {"Early Career": 399, "Experienced Professionals": 462, "Mid-Career": 458, "Pre-Retirement": 221, "Senior Workforce": 460}, "gender": {"Non-Binary": 698, "Female": 660, "Male": 642}, "avg_absence": 1.13, "avg_ot": 13.95, "ot_abuse_rate": 1.96, "avg_late": 0.5, "avg_sick": 0.5, "attendance_risk": {"Low Risk": 33984, "Moderate Risk": 19857, "High Risk": 1694, "Critical Risk": 465}, "avg_productivity": 81.6, "avg_error_rate": 2.82, "suspicious_perf": 396, "highprod_higherror": 2140, "gradeA_fraud": 230, "grade_dist": {"B": 6321, "C": 5406, "D": 2776, "A": 2612, "F": 885}, "total_disc_cases": 287, "disc_severity": {"Medium": 92, "Low": 86, "High": 60, "Critical": 49}, "avg_resolution_days": 46.6, "disc_status": {"Closed": 98, "Open": 95, "Pending": 94}, "disc_incident_type": {"Policy Violation": 35, "Theft": 27, "Data Breach": 26, "Attendance Issue": 26, "Fraudulent Activity": 25, "Harassment": 25, "Ethics Violation": 23, "Conflict of Interest": 22, "Misconduct": 22, "Compliance Violation": 20, "Misrepresentation": 18, "Performance Issue": 18}, "avg_wi_score": 96.0, "wi_risk": {"Low Risk": 1836, "Moderate Risk": 100, "High Risk": 63, "Critical Risk": 1}, "wi_trend": {"2024": 96.0}}, "fin": {"total_loss": 6987456.0, "total_recovery": 1398462.0, "net_loss": 5588994.0, "fraud_count": 195, "avg_case_size": 35833.0, "recovery_rate": 20.01, "loss_by_type": {"Ghost Employee": 1587081.0, "Kickback Scheme": 1158877.0, "Data Manipulation": 1142805.0, "Identity Theft": 1013394.0, "Vendor Fraud": 675245.0, "Payroll Manipulation": 518396.0, "Payment Fraud": 285877.0, "Commission Fraud": 181600.0, "Expense Fraud": 141153.0, "Overtime Abuse": 107405.0, "Unauthorized Reimbursement": 91392.0, "Time Theft": 84231.0}, "count_by_type": {"Commission Fraud": 10, "Data Manipulation": 19, "Expense Fraud": 14, "Ghost Employee": 23, "Identity Theft": 19, "Kickback Scheme": 16, "Overtime Abuse": 12, "Payment Fraud": 15, "Payroll Manipulation": 17, "Time Theft": 19, "Unauthorized Reimbursement": 16, "Vendor Fraud": 15}, "loss_by_year": {"2024": 3021532.0, "2025": 2942190.0, "2026": 1023734.0}, "recovery_rate_by_type": {"Commission Fraud": 5.3, "Data Manipulation": 25.7, "Expense Fraud": 22.8, "Ghost Employee": 15.4, "Identity Theft": 35.3, "Kickback Scheme": 12.6, "Overtime Abuse": 19.6, "Payment Fraud": 30.6, "Payroll Manipulation": 14.6, "Time Theft": 30.0, "Unauthorized Reimbursement": 37.1, "Vendor Fraud": 10.5}, "status_dist": {"Closed - Confirmed": 71, "Under Investigation": 68, "Closed - Unfounded": 38, "Pending Review": 18}, "detection_method": {"Management Review": 45, "Internal Audit": 34, "System Alert": 32, "Third-party Report": 29, "Employee Report": 29, "Automated Detection": 26}, "complexity_dist": {"Medium": 75, "High": 50, "Very High": 36, "Low": 34}, "avg_ot_hours": 3.47, "excess_ot_count": 25, "payroll_exception_rate": 0.0, "avg_payroll_variance": -0.0, "duplicate_claim_rate": 0.0, "exception_rate": 5.02, "avg_claim": 515.97, "fraud_claim_count": 222, "expense_by_category": {"Accommodation": 220988.0, "Client Entertainment": 260985.0, "Equipment": 199876.0, "Meals": 225421.0, "Office Supplies": 237521.0, "Professional Services": 226420.0, "Telecommunications": 249660.0, "Training": 218981.0, "Transportation": 214823.0, "Travel": 229013.0}, "avg_risk_score": 0.499, "flagged_txn_count": 927, "suspicious_txn_rate": 1.98, "high_risk_txn_count": 4188, "txn_by_channel": {"ATM": 2816, "In-Person": 2727, "Mobile App": 2781, "Online": 2751, "Phone": 2702}, "total_txn": 13777, "avg_efrs": 16.59, "efrs_risk_dist": {"Low Risk": 1627, "Moderate Risk": 342, "High Risk": 30, "Critical Risk": 1}, "efrs_by_dept": {"Wealth Management": 17.63, "Consumer Lending": 17.07, "Digital Payment Services": 16.86, "Merchant Payment Processing": 16.82, "SME Financing": 16.07, "Credit Solutions": 16.03, "Compliance": 15.53, "Risk Management": 15.53, "Fraud Investigation": 15.0}, "top10_efrs": [{"Employee_ID": 168, "Department": "Consumer Lending", "EFRS": 61, "EFRS Risk Rating": "Critical Risk"}, {"Employee_ID": 1451, "Department": "SME Financing", "EFRS": 57, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 1170, "Department": "Consumer Lending", "EFRS": 55, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 300, "Department": "Digital Payment Services", "EFRS": 55, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 1781, "Department": "Wealth Management", "EFRS": 55, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 870, "Department": "Wealth Management", "EFRS": 55, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 861, "Department": "Consumer Lending", "EFRS": 53, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 1904, "Department": "Wealth Management", "EFRS": 48, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 765, "Department": "Consumer Lending", "EFRS": 47, "EFRS Risk Rating": "High Risk"}, {"Employee_ID": 1555, "Department": "Digital Payment Services", "EFRS": 47, "EFRS Risk Rating": "High Risk"}], "efrs_components_avg": {"Fraud": 0.8, "Transaction": 0.82, "Expense": 0.7, "Payroll": 9.5, "Attendance": 3.83, "Discipline": 0.47, "Performance": 0.47}, "dept_exposure": [{"Department": "Consumer Lending", "Avg EFRS": 17.07175925925926, "Employees": 432.0, "Exposure Score": 7375.0, "Relative Exposure Score": 1.0}, {"Department": "Digital Payment Services", "Avg EFRS": 16.857894736842105, "Employees": 380.0, "Exposure Score": 6406.0, "Relative Exposure Score": 0.8686101694915255}, {"Department": "SME Financing", "Avg EFRS": 16.06611570247934, "Employees": 363.0, "Exposure Score": 5832.000000000001, "Relative Exposure Score": 0.7907796610169493}, {"Department": "Credit Solutions", "Avg EFRS": 16.026515151515152, "Employees": 264.0, "Exposure Score": 4231.0, "Relative Exposure Score": 0.5736949152542373}, {"Department": "Wealth Management", "Avg EFRS": 17.63063063063063, "Employees": 222.0, "Exposure Score": 3914.0, "Relative Exposure Score": 0.5307118644067796}, {"Department": "Merchant Payment Processing", "Avg EFRS": 16.82191780821918, "Employees": 146.0, "Exposure Score": 2456.0, "Relative Exposure Score": 0.3330169491525424}, {"Department": "Risk Management", "Avg EFRS": 15.526881720430108, "Employees": 93.0, "Exposure Score": 1444.0, "Relative Exposure Score": 0.19579661016949151}, {"Department": "Fraud Investigation", "Avg EFRS": 15.0, "Employees": 64.0, "Exposure Score": 960.0, "Relative Exposure Score": 0.13016949152542373}, {"Department": "Compliance", "Avg EFRS": 15.527777777777779, "Employees": 36.0, "Exposure Score": 559.0, "Relative Exposure Score": 0.07579661016949153}]}}
+</script>
+
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-mark"><span>AF</span></div>
+        <div class="brand-text">
+          <div class="name">Aegis Financial Services Ltd.</div>
+          <div class="sub">Fraud Risk &amp; Workforce Integrity</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#exec">Exec Pulse</a>
+        <a href="#financial">Financial</a>
+        <a href="#hr">Workforce</a>
+        <a href="#efrs">EFRS Model</a>
+        <a href="#dept">Dept Exposure</a>
+        <a href="#integrity">Integrity</a>
+      </nav>
+      <div class="live-tag">
+        <div class="dot"></div>DATA AS OF FY2026 · Q2
+      </div>
+    </div>
+  </header>
+
+  <div class="wrap">
+
+    <!-- ================= HERO / EXEC PULSE ================= -->
+    <section id="exec" class="hero">
+      <div class="hero-top">
+        <div class="hero-title">
+          <span class="tag">Executive Intelligence Briefing</span>
+          <h1>Fraud Risk &amp; Workforce Integrity, at a glance.</h1>
+          <p>Consolidated view across 2,000 employees, 195 confirmed fraud cases and 13,777 monitored transactions —
+            combining the Financial Analyst's loss &amp; exposure models with the HR Analyst's workforce integrity
+            signals.</p>
+        </div>
+        <div class="stamp mono">
+          <div class="row"><span>WORKFORCE</span><b>2,000 EMP</b></div>
+          <div class="row"><span>DEPARTMENTS</span><b>9</b></div>
+          <div class="row"><span>FRAUD CASES</span><b>195</b></div>
+          <div class="row"><span>REPORTING PERIOD</span><b>2024–2026</b></div>
+        </div>
+      </div>
+
+      <div class="pulse-grid">
+        <div class="pulse-cell accent-red">
+          <div class="lbl">Total Fraud Loss</div>
+          <div class="val">£6.99M</div>
+          <div class="delta up">195 confirmed cases</div>
+        </div>
+        <div class="pulse-cell accent-amber">
+          <div class="lbl">Net Loss (after recovery)</div>
+          <div class="val">£5.59M</div>
+          <div class="delta flat">20.0% recovered</div>
+        </div>
+        <div class="pulse-cell accent-teal">
+          <div class="lbl">Recovery Rate</div>
+          <div class="val">20.0%</div>
+          <div class="delta down">£1.40M recovered</div>
+        </div>
+        <div class="pulse-cell accent-gold">
+          <div class="lbl">Avg. Employee Fraud Risk Score</div>
+          <div class="val">16.6</div>
+          <div class="delta flat">of 100 · Low Risk band</div>
+        </div>
+        <div class="pulse-cell accent-teal">
+          <div class="lbl">Workforce Integrity Score</div>
+          <div class="val">96.0</div>
+          <div class="delta down">of 100 · avg. across 2,000 emp</div>
+        </div>
+        <div class="pulse-cell accent-red">
+          <div class="lbl">Critical / High EFRS Employees</div>
+          <div class="val">31</div>
+          <div class="delta up">1 critical · 30 high</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FINANCIAL KPIs ================= -->
+    <section id="financial">
+      <div class="eyebrow">
+        <div class="letter">A</div>
+        <div class="txt">Financial Analyst — Fraud Loss &amp; Exposure</div>
+      </div>
+      <h2>Financial KPIs</h2>
+      <p class="section-desc">Fraud loss, recovery, payroll, expense and transaction-level exposure — owned by the
+        Financial Analyst workstream.</p>
+
+      <div class="grid g5" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="k-lbl">Total Fraud Loss</div>
+          <div class="k-val">£6,987,456</div>
+          <div class="k-foot">Sum of Financial_Loss</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Total Recovery</div>
+          <div class="k-val">£1,398,462</div>
+          <div class="k-foot">Sum of Recovery_Amount</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Net Loss</div>
+          <div class="k-val">£5,588,994</div>
+          <div class="k-foot">Loss − Recovery</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Fraud Incidents</div>
+          <div class="k-val">195</div>
+          <div class="k-foot">Confirmed &amp; investigated cases</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Avg. Case Size</div>
+          <div class="k-val">£35,833</div>
+          <div class="k-foot">Avg. Financial_Loss / case</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="panel">
+          <div class="panel-title">Fraud Loss by Type — Pareto</div>
+          <div class="panel-sub">Ranked contribution to total £6.99M loss, with cumulative % curve</div>
+          <div class="chart-box tall"><canvas id="chartPareto"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Fraud Loss Trend</div>
+          <div class="panel-sub">By calendar year (2026 partial)</div>
+          <div class="chart-box tall"><canvas id="chartTrend"></canvas></div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="panel">
+          <div class="panel-title">Recovery Effectiveness by Fraud Type</div>
+          <div class="panel-sub">Recovery £ ÷ Loss £, weighted by case value</div>
+          <div class="chart-box"><canvas id="chartRecovery"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Case Status</div>
+          <div class="panel-sub">195 fraud cases by investigation status</div>
+          <div class="chart-box"><canvas id="chartStatus"></canvas></div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="panel">
+          <div class="panel-title">Payroll Fraud</div>
+          <div class="panel-sub">56,000 monthly payroll records</div>
+          <table>
+            <tr>
+              <td>Avg. Overtime Hours</td>
+              <td class="mono" style="text-align:right;">3.47</td>
+            </tr>
+            <tr>
+              <td>Excess-OT Flags (&gt;50h)</td>
+              <td class="mono" style="text-align:right;">25</td>
+            </tr>
+            <tr>
+              <td>Payroll Exception Rate</td>
+              <td class="mono" style="text-align:right;">0.00%</td>
+            </tr>
+            <tr>
+              <td>Avg. Payroll Variance</td>
+              <td class="mono" style="text-align:right;">£0.00</td>
+            </tr>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Expense Fraud</div>
+          <div class="panel-sub">4,426 submitted claims</div>
+          <table>
+            <tr>
+              <td>Duplicate Claim Rate</td>
+              <td class="mono" style="text-align:right;">0.00%</td>
+            </tr>
+            <tr>
+              <td>Exception Rate</td>
+              <td class="mono" style="text-align:right;">5.02%</td>
+            </tr>
+            <tr>
+              <td>Avg. Claim Value</td>
+              <td class="mono" style="text-align:right;">£515.97</td>
+            </tr>
+            <tr>
+              <td>Flagged Fraud Claims</td>
+              <td class="mono" style="text-align:right;">222</td>
+            </tr>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Transaction Fraud</div>
+          <div class="panel-sub">13,777 monitored transactions</div>
+          <table>
+            <tr>
+              <td>Avg. Risk Score</td>
+              <td class="mono" style="text-align:right;">0.499</td>
+            </tr>
+            <tr>
+              <td>Flagged for Review</td>
+              <td class="mono" style="text-align:right;">927</td>
+            </tr>
+            <tr>
+              <td>Suspicious Txn Rate</td>
+              <td class="mono" style="text-align:right;">1.98%</td>
+            </tr>
+            <tr>
+              <td>High-Risk Txns (&gt;0.7)</td>
+              <td class="mono" style="text-align:right;">4,188</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HR KPIs ================= -->
+    <section id="hr">
+      <div class="eyebrow">
+        <div class="letter">B</div>
+        <div class="txt">HR Analyst — Workforce Behaviour &amp; Misconduct</div>
+      </div>
+      <h2>HR KPIs</h2>
+      <p class="section-desc">Workforce profile, attendance abuse, performance-fraud signals and disciplinary history —
+        owned by the HR Analyst workstream.</p>
+
+      <div class="grid g4" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="k-lbl">Headcount</div>
+          <div class="k-val">2,000</div>
+          <div class="k-foot">Avg. age 42.6 · avg. tenure 9.0 yrs</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Avg. Salary</div>
+          <div class="k-val">£55,022</div>
+          <div class="k-foot">Across 9 departments</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">OT Abuse Rate</div>
+          <div class="k-val">1.96%</div>
+          <div class="k-foot">Overtime &gt; 50h / month</div>
+        </div>
+        <div class="card">
+          <div class="k-lbl">Suspicious Performance Records</div>
+          <div class="k-val">396</div>
+          <div class="k-foot">of 18,000 quarterly reviews</div>
+        </div>
+      </div>
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="panel">
+          <div class="panel-title">Headcount by Department</div>
+          <div class="panel-sub">2,000 employees across 9 business lines</div>
+          <div class="chart-box tall"><canvas id="chartDept"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Attendance Risk Distribution</div>
+          <div class="panel-sub">56,000 monthly attendance records</div>
+          <div class="chart-box tall"><canvas id="chartAttendance"></canvas></div>
+        </div>
+      </div>
+
+      <div class="three-col">
+        <div class="panel">
+          <div class="panel-title">Performance Fraud Signals</div>
+          <table>
+            <tr>
+              <td>Avg. Productivity Score</td>
+              <td class="mono" style="text-align:right;">81.6</td>
+            </tr>
+            <tr>
+              <td>Avg. Error Rate</td>
+              <td class="mono" style="text-align:right;">2.82%</td>
+            </tr>
+            <tr>
+              <td>High-Prod / High-Error</td>
+              <td class="mono" style="text-align:right;">2,140</td>
+            </tr>
+            <tr>
+              <td>Grade-A Fraud Flags</td>
+              <td class="mono" style="text-align:right;">230</td>
+            </tr>
+          </table>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Disciplinary Cases by Severity</div>
+          <div class="chart-box short"><canvas id="chartDisc"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Disciplinary Summary</div>
+          <table>
+            <tr>
+              <td>Total Cases</td>
+              <td class="mono" style="text-align:right;">287</td>
+            </tr>
+            <tr>
+              <td>Open Cases</td>
+              <td class="mono" style="text-align:right;">95</td>
+            </tr>
+            <tr>
+              <td>Avg. Resolution Days</td>
+              <td class="mono" style="text-align:right;">46.6</td>
+            </tr>
+            <tr>
+              <td>Critical Severity</td>
+              <td class="mono" style="text-align:right;">49</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= EFRS MODEL ================= -->
+    <section id="efrs">
+      <div class="eyebrow">
+        <div class="letter">C</div>
+        <div class="txt">Joint Model — Employee Fraud Risk Score</div>
+      </div>
+      <h2>EFRS Model</h2>
+      <p class="section-desc">The Employee Fraud Risk Score blends seven weighted risk factors into a single 0–100
+        score, banding every employee from Low to Critical risk.</p>
+
+      <div class="efrs-formula">
+        <span class="term">EFRS</span> = <span class="term">0.30</span>·Fraud Incident + <span
+          class="term">0.15</span>·Suspicious Txn + <span class="term">0.15</span>·Expense Fraud + <span
+          class="term">0.10</span>·Payroll Abuse + <span class="term">0.10</span>·Attendance Abuse + <span
+          class="term">0.10</span>·Disciplinary History + <span class="term">0.10</span>·Performance Anomaly
+      </div>
+
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="panel">
+          <div class="panel-title">Model Weighting</div>
+          <div class="panel-sub">Contribution of each risk factor to the composite score</div>
+          <div class="weight-bars" id="weightBars"></div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">EFRS Risk Band Distribution</div>
+          <div class="panel-sub">2,000 employees scored, avg. EFRS = 16.6</div>
+          <div class="chart-box"><canvas id="chartEfrsDist"></canvas></div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Top 10 Highest-Risk Employees</div>
+        <div class="panel-sub">Ranked by EFRS — candidates for proactive investigation</div>
+        <table>
+          <thead>
+            <tr>
+              <th class="mono">Rank</th>
+              <th class="mono">Employee ID</th>
+              <th>Department</th>
+              <th class="mono">EFRS</th>
+              <th>Risk Rating</th>
+            </tr>
+          </thead>
+          <tbody id="efrsTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ================= DEPARTMENT EXPOSURE ================= -->
+    <section id="dept">
+      <div class="eyebrow">
+        <div class="letter">D</div>
+        <div class="txt">Joint Model — Department Risk Exposure</div>
+      </div>
+      <h2>Department Fraud Exposure</h2>
+      <p class="section-desc">Exposure Score = Avg. EFRS × Headcount, indexed to the highest-exposure department
+        (Consumer Lending = 1.00).</p>
+
+      <div class="panel">
+        <div class="ladder" id="deptLadder"></div>
+      </div>
+    </section>
+
+    <!-- ================= WORKFORCE INTEGRITY ================= -->
+    <section id="integrity">
+      <div class="eyebrow">
+        <div class="letter">E</div>
+        <div class="txt">Joint Model — Workforce Integrity Score</div>
+      </div>
+      <h2>Workforce Integrity</h2>
+      <p class="section-desc">A 100-point score per employee per year, deducting for disciplinary, attendance, fraud and
+        performance risk points.</p>
+
+      <div class="two-col">
+        <div class="panel">
+          <div class="gauge-wrap">
+            <div class="chart-box" style="width:260px;height:260px;"><canvas id="chartIntegrityGauge"></canvas></div>
+            <div class="gauge-val">96.0</div>
+            <div class="gauge-lbl">Avg. Integrity Score / 100</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title">Workforce Risk Bands</div>
+          <div class="panel-sub">2,000 employees, FY2024</div>
+          <div class="chart-box tall"><canvas id="chartWiBands"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <p>AEGIS FINANCIAL SERVICES LTD. · FRAUD RISK &amp; WORKFORCE INTEGRITY ANALYTICS · BIRMINGHAM, UK</p>
+      <p>SOURCE: HR_Analyst_Data.xlsx · Financial_Analyst_Data.xlsx</p>
+    </div>
+  </footer>
+
+  <script>
+    const DATA = JSON.parse(document.getElementById('dashboard-data').textContent);
+    const hr = DATA.hr, fin = DATA.fin;
+
+    Chart.defaults.font.family = "'IBM Plex Mono', monospace";
+    Chart.defaults.font.size = 11;
+    Chart.defaults.color = '#8695B5';
+
+    const COLORS = { teal: '#2FD1C0', amber: '#F2A93B', red: '#FF5A5F', gold: '#D8B45C', blue: '#5B8DEF', muted: '#3A4666' };
+    const gridColor = '#1A2338';
+
+    function fmtGBP(n) { return '£' + Math.round(n).toLocaleString(); }
+
+    /* ---- Pareto: fraud loss by type ---- */
+    (function () {
+      const entries = Object.entries(fin.loss_by_type); // already sorted desc
+      const labels = entries.map(e => e[0]);
+      const vals = entries.map(e => e[1]);
+      const total = vals.reduce((a, b) => a + b, 0);
+      let cum = 0;
+      const cumPct = vals.map(v => { cum += v; return +(cum / total * 100).toFixed(1); });
+      new Chart(document.getElementById('chartPareto'), {
+        data: {
+          labels,
+          datasets: [
+            { type: 'bar', label: 'Loss (£)', data: vals, backgroundColor: '#FF5A5F99', borderColor: COLORS.red, borderWidth: 1, yAxisID: 'y' },
+            { type: 'line', label: 'Cumulative %', data: cumPct, borderColor: COLORS.gold, backgroundColor: COLORS.gold, tension: 0.3, yAxisID: 'y1', pointRadius: 2 }
+          ]
+        },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: {
+            x: { ticks: { maxRotation: 60, minRotation: 60, autoSkip: false, font: { size: 9 } }, grid: { color: gridColor } },
+            y: { ticks: { callback: v => '£' + (v / 1000) + 'k' }, grid: { color: gridColor } },
+            y1: { position: 'right', min: 0, max: 100, ticks: { callback: v => v + '%' }, grid: { display: false } }
+          },
+          plugins: { legend: { labels: { boxWidth: 10, font: { size: 10 } } } }
+        }
+      });
+    })();
+
+    /* ---- Trend by year ---- */
+    (function () {
+      const labels = Object.keys(fin.loss_by_year);
+      const vals = Object.values(fin.loss_by_year);
+      new Chart(document.getElementById('chartTrend'), {
+        type: 'line',
+        data: { labels, datasets: [{ label: 'Fraud Loss (£)', data: vals, borderColor: COLORS.amber, backgroundColor: '#F2A93B22', fill: true, tension: 0.35, pointRadius: 4, pointBackgroundColor: COLORS.amber }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: { x: { grid: { color: gridColor } }, y: { ticks: { callback: v => '£' + (v / 1e6).toFixed(1) + 'M' }, grid: { color: gridColor } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    })();
+
+    /* ---- Recovery rate by type ---- */
+    (function () {
+      const entries = Object.entries(fin.recovery_rate_by_type).sort((a, b) => b[1] - a[1]);
+      new Chart(document.getElementById('chartRecovery'), {
+        type: 'bar',
+        data: { labels: entries.map(e => e[0]), datasets: [{ label: 'Recovery Rate %', data: entries.map(e => e[1]), backgroundColor: COLORS.teal + 'aa', borderColor: COLORS.teal, borderWidth: 1 }] },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          scales: { x: { ticks: { callback: v => v + '%' }, grid: { color: gridColor } }, y: { grid: { display: false }, ticks: { font: { size: 9.5 } } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    })();
+
+    /* ---- Case status donut ---- */
+    (function () {
+      const entries = Object.entries(fin.status_dist);
+      new Chart(document.getElementById('chartStatus'), {
+        type: 'doughnut',
+        data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: [COLORS.teal, COLORS.amber, COLORS.muted, COLORS.red], borderColor: '#080C15', borderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '62%',
+          plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } }
+        }
+      });
+    })();
+
+    /* ---- Dept headcount ---- */
+    (function () {
+      const entries = Object.entries(hr.dept_headcount);
+      new Chart(document.getElementById('chartDept'), {
+        type: 'bar',
+        data: { labels: entries.map(e => e[0]), datasets: [{ label: 'Headcount', data: entries.map(e => e[1]), backgroundColor: COLORS.blue + 'aa', borderColor: COLORS.blue, borderWidth: 1 }] },
+        options: {
+          indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+          scales: { x: { grid: { color: gridColor } }, y: { grid: { display: false }, ticks: { font: { size: 10 } } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    })();
+
+    /* ---- Attendance risk ---- */
+    (function () {
+      const entries = Object.entries(hr.attendance_risk);
+      const order = ['Low Risk', 'Moderate Risk', 'High Risk', 'Critical Risk'];
+      entries.sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]));
+      new Chart(document.getElementById('chartAttendance'), {
+        type: 'doughnut',
+        data: { labels: entries.map(e => e[0]), datasets: [{ data: entries.map(e => e[1]), backgroundColor: [COLORS.teal, COLORS.amber, '#FF8A5C', COLORS.red], borderColor: '#080C15', borderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '62%',
+          plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } }
+        }
+      });
+    })();
+
+    /* ---- Disciplinary severity ---- */
+    (function () {
+      const order = ['Low', 'Medium', 'High', 'Critical'];
+      const vals = order.map(k => hr.disc_severity[k]);
+      new Chart(document.getElementById('chartDisc'), {
+        type: 'bar',
+        data: { labels: order, datasets: [{ data: vals, backgroundColor: [COLORS.teal, COLORS.amber, '#FF8A5C', COLORS.red] }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: { x: { grid: { display: false } }, y: { grid: { color: gridColor } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    })();
+
+    /* ---- EFRS weighting bars ---- */
+    (function () {
+      const weights = [
+        ['Fraud Incident', 30], ['Suspicious Transaction', 15], ['Expense Fraud', 15],
+        ['Payroll Abuse', 10], ['Attendance Abuse', 10], ['Disciplinary History', 10], ['Performance Anomaly', 10]
+      ];
+      const el = document.getElementById('weightBars');
+      weights.forEach(([name, pct]) => {
+        const row = document.createElement('div'); row.className = 'weight-row';
+        row.innerHTML = `<div class="name">${name}</div><div class="weight-track"><div class="weight-fill" style="width:${pct * 2.2}%"></div></div><div class="pct">${pct}%</div>`;
+        el.appendChild(row);
+      });
+    })();
+
+    /* ---- EFRS distribution ---- */
+    (function () {
+      const order = ['Low Risk', 'Moderate Risk', 'High Risk', 'Critical Risk'];
+      const vals = order.map(k => fin.efrs_risk_dist[k] || 0);
+      new Chart(document.getElementById('chartEfrsDist'), {
+        type: 'doughnut',
+        data: { labels: order, datasets: [{ data: vals, backgroundColor: [COLORS.teal, COLORS.amber, '#FF8A5C', COLORS.red], borderColor: '#080C15', borderWidth: 2 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '62%',
+          plugins: { legend: { position: 'right', labels: { boxWidth: 10, font: { size: 10 } } } }
+        }
+      });
+    })();
+
+    /* ---- EFRS top 10 table ---- */
+    (function () {
+      const body = document.getElementById('efrsTableBody');
+      fin.top10_efrs.forEach((row, i) => {
+        const rating = row['EFRS Risk Rating'];
+        const cls = rating.toLowerCase().includes('critical') ? 'critical' : rating.toLowerCase().includes('high') ? 'high' : rating.toLowerCase().includes('moderate') ? 'moderate' : 'low';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td class="mono">${i + 1}</td><td class="mono">#${row.Employee_ID}</td><td>${row.Department}</td><td class="mono">${row.EFRS}</td><td><span class="badge ${cls}">${rating}</span></td>`;
+        body.appendChild(tr);
+      });
+    })();
+
+    /* ---- Department exposure ladder ---- */
+    (function () {
+      const el = document.getElementById('deptLadder');
+      const maxScore = Math.max(...fin.dept_exposure.map(d => d['Exposure Score']));
+      fin.dept_exposure.forEach(d => {
+        const pct = d['Relative Exposure Score'] * 100;
+        const color = pct > 85 ? COLORS.red : pct > 50 ? COLORS.amber : COLORS.teal;
+        const row = document.createElement('div'); row.className = 'ladder-row';
+        row.innerHTML = `
+      <div class="dep">${d.Department}</div>
+      <div class="ladder-track"><div class="ladder-fill" style="width:${pct}%; background:${color};"></div></div>
+      <div class="score">${Math.round(d['Exposure Score']).toLocaleString()}</div>
+      <div class="emp">${Math.round(d.Employees)} emp</div>`;
+        el.appendChild(row);
+      });
+    })();
+
+    /* ---- Integrity gauge ---- */
+    (function () {
+      new Chart(document.getElementById('chartIntegrityGauge'), {
+        type: 'doughnut',
+        data: { datasets: [{ data: [96.0, 4.0], backgroundColor: [COLORS.teal, '#1A2338'], borderWidth: 0 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false, cutout: '78%', rotation: -90, circumference: 180,
+          plugins: { legend: { display: false }, tooltip: { enabled: false } }
+        }
+      });
+    })();
+
+    /* ---- Workforce risk bands ---- */
+    (function () {
+      const order = ['Low Risk', 'Moderate Risk', 'High Risk', 'Critical Risk'];
+      const vals = order.map(k => hr.wi_risk[k] || 0);
+      new Chart(document.getElementById('chartWiBands'), {
+        type: 'bar',
+        data: { labels: order, datasets: [{ data: vals, backgroundColor: [COLORS.teal, COLORS.amber, '#FF8A5C', COLORS.red] }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          scales: { x: { grid: { display: false } }, y: { type: 'logarithmic', grid: { color: gridColor }, ticks: { callback: v => [1, 10, 100, 1000, 2000].includes(v) ? v : null } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+    })();
+  </script>
+</body>
+
+</html>
